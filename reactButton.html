@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React button</title>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!--<script type="text/javascript" src="reactButtonsFunctionality.js"></script>-->
+
+  <style>
+    #config {
+      /*margin-left: 80px;*/
+      /*margin-top: -26px;*/
+    }
+
+    /*#shape {*/
+      /*background-color: white;*/
+      /*border: 2px solid black;*/
+      /*border-radius: 100px;*/
+      /*height: 50px;*/
+      /*width: 50px;*/
+    /*}*/
+
+    .fillin {
+      background-color: yellow !important;
+      -webkit-box-shadow: 0 0 8px #FFD700;
+      -moz-box-shadow: 0 0 8px #FFD700;
+      box-shadow: 0 0 8px #FFD700;
+      cursor:pointer;
+    }
+
+    .border {
+      background-color: green;
+      border: 2px solid black;
+      height: 100px;
+      width: 100px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="container"></div>
+
+<div id="shape"></div>
+
+
+<script src="node_modules/react/dist/react-with-addons.js" type="text/javascript" ></script>
+<script src="node_modules/react/dist/JSXTransformer.js" type="text/javascript" ></script>
+<script src="node_modules/react-panels/dist/react-panels.js" type="text/javascript" ></script>
+
+<script type="text/jsx">
+  var ButtonStyle = {
+    backgroundColor: 'white',
+    height: 25,
+    width: 70,
+    borderRadius: 8,
+    borderStyle:'solid',
+    borderWidth: 1,
+    fontFamily: 'Verdana',
+    textAlign: 'center',
+    display: 'inline-block',
+    cursor: 'default',
+    MozUserSelect: 'none'
+
+  };
+
+  var ButtonSelected = {
+    cursor: 'pointer'
+  };
+
+  var ButtonClick = React.createClass({
+    getInitialState: function(){
+      return {favourited: false};
+    },
+    handleClick: function(event){
+      this.setState({favourited: !this.state.favourited});
+    },
+    render: function(){
+      var text = this.state.favourited ? "favourited" : "haven\'t favourited";
+      return(
+        <p onClick={this.handleClick}>
+          You {text} this. Click to toggle.
+        </p>
+      );
+    }
+
+  });
+
+  var FavouriteButton = React.createClass({
+    getInitialState: function(){
+      return {
+        condition:false, favourited: false
+      }
+    },
+
+    handleClick :function(){
+      this.setState( { condition: !this.state.condition });
+      this.setState( {favourited: !this.state.favourited});
+    },
+    render: function(){
+      var text = this.state.favourited ? "favourited" : "haven\'t favourited";
+      return(
+      <div>
+        <div style={ButtonStyle}  className={this.state.condition ? "fillin" :""} onClick={this.handleClick} >Fav</div>
+        <p>
+          You {text} this. Click to toggle.
+        </p>
+
+        </div>
+      );
+    }
+  });
+
+  var ConfigButton = React.createClass({
+    getInitialState: function(){
+      return {configured: false,
+      condition: false};
+    },
+    handleClick: function(event){
+      this.setState({configured: !this.state.configured});
+      this.setState({condition: !this.state.condition});
+    },
+    render: function() {
+      var text = this.state.configured ? "open" : "closed";
+      return(
+        <div style={ButtonStyle} onClick={this.handleClick}>Config
+        <p onClick={this.handleClick}>
+          Config tab is {text}. Click to toggle.
+        </p>
+          <div className={this.state.condition ? "border" : ""}></div>
+        </div>
+      )}
+  });
+
+  var App = React.createClass({
+    render: function(){
+      return(
+        <div>
+          <div id="example"><FavouriteButton/></div>
+          <div id="config"><ConfigButton/></div>
+        </div>
+      )
+    }
+  });
+
+  React.render(<App/>, document.getElementById('container'));
+
+
+</script>
+
+</body>
+</html>

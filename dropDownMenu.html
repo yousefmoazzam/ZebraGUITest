@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drop down menu</title>
+  <link rel="stylesheet/less" type="text/css" href="dropDownMenuLessStylesheet.less" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+
+  <script src="node_modules/less/dist/less.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+<div id="container"></div>
+
+<script type="text/javascript" src="node_modules/react/dist/react-with-addons.js"></script>
+<script type="text/javascript" src="node_modules/react/dist/JSXTransformer.js"></script>
+<script type="text/javascript" src="node_modules/react-panels/dist/react-panels.js"></script>
+
+<script type="text/jsx">
+
+  var Dropdown = React.createClass({
+    getInitialState: function() {
+      return {
+        listVisible: false
+      };
+    },
+
+    select: function(item) {
+      this.props.selected = item;
+    },
+
+    show: function() {
+      this.setState({ listVisible: true });
+      document.addEventListener("click", this.hide);
+    },
+
+    hide: function() {
+      this.setState({ listVisible: false });
+      document.removeEventListener("click", this.hide);
+    },
+
+    render: function() {
+      return <div className={"dropdown-container" + (this.state.listVisible ? " show" : "")}>
+        <div className={"dropdown-display" + (this.state.listVisible ? " clicked": "")} onClick={this.show}>
+          <span style={{ color: this.props.selected.hex }}>{this.props.selected.name}</span>
+          <i className="fa fa-angle-down"></i>
+        </div>
+        <div className="dropdown-list">
+          <div>
+            {this.renderListItems()}
+          </div>
+        </div>
+      </div>;
+    },
+
+    renderListItems: function() {
+      var items = [];
+      for (var i = 0; i < this.props.list.length; i++) {
+        var item = this.props.list[i];
+        items.push(<div onClick={this.select.bind(null, item)}>
+          <span style={{ color: item.hex }}>{item.name}</span>
+        </div>);
+      }
+      return items;
+    }
+  });
+
+  var colours = [{
+    name: "Extra tab 1",
+    hex: "#F21B1B"
+  }, {
+    name: "Extra tab 2",
+    hex: "#1B66F2"
+  }, {
+    name: "Extra tab 3",
+    hex: "#07BA16"
+  }];
+
+  React.render(<Dropdown list={colours} selected={colours[0]} />, document.getElementById("container"));
+
+</script>
+
+</body>
+</html>
